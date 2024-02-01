@@ -22,4 +22,5 @@ def findUserByTelegramId(telegram_id):
         return None;
 
 
-createUser('Sasha', 21343223)
+if __name__ == "__main__":
+    createUser('Sasha', 21343223)
