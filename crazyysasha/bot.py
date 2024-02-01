@@ -7,7 +7,7 @@ from aiogram.fsm.state import StatesGroup, State
 from aiogram.types import Message
 from dotenv import load_dotenv
 
-from crazyysasha.db import findUserByTelegramId
+from .db import findUserByTelegramId
 
 
 
@@ -29,7 +29,6 @@ async def startHandler(message: Message, state: FSMContext) :
     if findUserByTelegramId(message.chat.id):
 
         await message.answer("""бла бла бла - прикольная игра.
-
 /new - запустить новую игру
 /multiplayer - запустить игру с другом
 /story - история игр
