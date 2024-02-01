@@ -7,7 +7,7 @@ from aiogram.fsm.state import StatesGroup, State
 from aiogram.types import Message
 from dotenv import load_dotenv
 
-from .db import findUserByTelegramId
+from db import createUser, findUserByTelegramId
 
 
 
@@ -37,6 +37,14 @@ async def startHandler(message: Message, state: FSMContext) :
     else:
         await state.set_state(RegisterState.requestName)
         await message.answer('э, напиши свое имя !');
+
+
+@dp.message(StateFilter(RegisterState.requestName))
+async def registerHandler(message: Message, state: FSMContext):
+    createUser(name=message.text, telegram_id= message.from_user.id);
+    await message.answer('спасибо!')
+    await state.set_state();
+
 
 async def main():
     await dp.start_polling(bot);
