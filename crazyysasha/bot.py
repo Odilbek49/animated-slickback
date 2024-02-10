@@ -8,7 +8,7 @@ from aiogram.fsm.state import StatesGroup, State
 from aiogram.types import Message, ReplyKeyboardMarkup, KeyboardButton
 from dotenv import load_dotenv
 
-from db import createUser, findUserByTelegramId
+from db import createGameHistory, createUser, findUserByTelegramId, getAllUserResults
 
 
 
@@ -92,8 +92,19 @@ async def gameLoop(message: Message, state: FSMContext):
         '2:2': 'tie',
     }
     turns = ["Камень", "Ножницы", "Бумага"]
-    
+    winOrLose  = table[f'{botTurn}:{turns.index(message.text)}'];
+    createGameHistory({'win': message.chat.id, 'tie': 'tie', 'lose': 'bot'}[winOrLose], ['bot', message.chat.id]);
     await message.answer(f'{table[f"{botTurn}" + ":" + f"{turns.index(message.text)}"]} {turns[botTurn]}')
+
+
+@dp.message(Command('story'))
+async def handleStory(message: Message):
+    s = '';
+    games = getAllUserResults(message.chat.id);
+
+    for  game in games:
+        s += f'{game[0]}. {game[1]} - {game[2]} \n' 
+    await message.answer(s)
 
 async def main():
     await dp.start_polling(bot);
