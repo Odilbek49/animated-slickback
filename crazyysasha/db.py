@@ -9,6 +9,11 @@ cursor = con.cursor();
 cursor.execute('create table if not exists users (id integer primary key autoincrement, name, telegram_id integer)');
 
 cursor.execute('create table if not exists games (id integer primary key autoincrement, winner, played_at, players)')
+try:
+    cursor.execute('alter table games add column if not exists status default "end"')
+
+except:
+    print('status added early');
 
 def createUser(name, telegram_id):
     cursor.execute('insert into users (name, telegram_id) values (?, ?)', (name, telegram_id))
